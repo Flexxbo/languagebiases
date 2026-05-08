@@ -6,3 +6,5 @@ nltk
 thefuzz
 pandas
 numpy
+scipy
+matplotlib

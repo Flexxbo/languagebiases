@@ -6,7 +6,7 @@ import os
 
 def social_proof(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -37,7 +37,7 @@ Enhanced description:
 
 def exclusivity(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -69,7 +69,7 @@ Enhanced description:
 
 def attack_scarcity(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -101,7 +101,7 @@ Enhanced description:
 
 def attack_discount_framing(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -143,7 +143,7 @@ Enhanced description:
 
 def contrast_effect(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -174,7 +174,7 @@ Enhanced description:
 
 def decoy_effect(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -205,7 +205,7 @@ Enhanced description:
 
 def authority_bias(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -236,7 +236,7 @@ Enhanced description:
 
 def bizarreness_effect(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -267,7 +267,7 @@ Enhanced description:
 
 def denominator_neglect(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -303,7 +303,7 @@ Enhanced description:
 
 def storytelling_effect(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,
@@ -334,7 +334,7 @@ Enhanced description:
 
 def identity_signaling(product, aws_access_key_id, aws_secret_access_key):
     
-    model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+    model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     bedrock_runtime_client = boto3.client(
         service_name="bedrock-runtime",
         aws_access_key_id=aws_access_key_id,

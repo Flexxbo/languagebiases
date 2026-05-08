@@ -80,15 +80,15 @@ def attack_experiment(model_name, attack, aws_keys_csv_filename, run_control): #
                         
     tokenizer, aws_model_id = get_tokenizer_aws_model_id(model_name)
 
-    for catalog in ['coffee_machines', 'cameras', 'books']: ###catalog_ = ['coffee_machines', 'cameras', 'books'] if catalog_type == 'simple' else ["laptops", "home_office_chairs", "chew_toys"] for catalog in catalog_:
+    for catalog in ['coffee_machines']: ###catalog_ = ['coffee_machines', 'cameras', 'books'] if catalog_type == 'simple' else ["laptops", "home_office_chairs", "chew_toys"] for catalog in catalog_:
         for user_msg_type in ["abstract"]:
             if attack_is_complete(model_name, attack, user_msg_type, catalog):
                 print (f"Attack is complete: {[model_name, attack, user_msg_type, catalog]}")
                 continue
 
-            for item_attacked in range (10): ###user_msg, filename = get_user_msg(catalog, user_msg_type) #list_of_products = read_products(filename) #for item_attacked in range (len(list_of_products)):
+            for item_attacked in range (1): ###user_msg, filename = get_user_msg(catalog, user_msg_type) #list_of_products = read_products(filename) #for item_attacked in range (len(list_of_products)):
                 outps = []
-                for i in range (100):
+                for i in range (1):
                     
                     user_msg, filename = get_user_msg(catalog, user_msg_type) ###delete from here
                     list_of_products = read_products(filename) # read products ###delete from here

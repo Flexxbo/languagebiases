@@ -137,22 +137,31 @@ def fuzzy_align(text, products, window = 5, pattern = 'numbered', adjuster = 10,
 
     return aligned_output
     
+class BedrockLlamaChatTemplate:
+    def apply_chat_template(self, chat, tokenize=False):
+        prompt = "<|begin_of_text|>"
+        for message in chat:
+            role = message["role"]
+            content = message["content"]
+            prompt += (
+                f"<|start_header_id|>{role}<|end_header_id|>\n\n"
+                f"{content}<|eot_id|>"
+            )
+        prompt += "<|start_header_id|>assistant<|end_header_id|>\n\n"
+        return prompt
 
 def get_tokenizer_aws_model_id(model_name):
     tokenizer, aws_model_id = None, None
     if model_name == "llama3.1-8b":
-        hf_path = "meta-llama/Llama-3.1-8B"
-        tokenizer = AutoTokenizer.from_pretrained(hf_path)
+        tokenizer = BedrockLlamaChatTemplate()
         aws_model_id= "meta.llama3-1-8b-instruct-v1:0"
 
     elif model_name == "llama3.1-70b":
-        hf_path = "meta-llama/Llama-3.1-70B"
-        tokenizer = AutoTokenizer.from_pretrained(hf_path)
+        tokenizer = BedrockLlamaChatTemplate()
         aws_model_id= "meta.llama3-70b-instruct-v1:0"
 
     elif model_name == "llama3.1-405b":
-        hf_path = "meta-llama/Meta-Llama-3.1-405B"
-        tokenizer = AutoTokenizer.from_pretrained(hf_path)
+        tokenizer = BedrockLlamaChatTemplate()
         aws_model_id= "meta.llama3-1-405b-instruct-v1:0"
         
     return tokenizer, aws_model_id

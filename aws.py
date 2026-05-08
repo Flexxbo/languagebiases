@@ -62,6 +62,7 @@ class Chat:
 
 
     def generate(self):
+        print("Calling Bedrock model:", self.model_id)
         response = self.bedrock_runtime_client.invoke_model(
             modelId=self.model_id,
             contentType="application/json",

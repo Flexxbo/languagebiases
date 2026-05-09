@@ -59,3 +59,4 @@ aws_keys.csv
 __pycache__/
 outputs_rank_optimizer/
 *.pickle
+.DS_Store

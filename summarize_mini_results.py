@@ -59,7 +59,7 @@ def print_metrics(label, path, target_idx):
 control_files = glob.glob(os.path.join(BASE, "control_attack_baseline", "*.pickle"))
 if control_files:
     control_path = control_files[0]
-    for target_idx in [0, 1]:
+    for target_idx in range(10):
         print_metrics("control", control_path, target_idx)
 
 for attack in ["social_proof_baseline", "social_proof"]:

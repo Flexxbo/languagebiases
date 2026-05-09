@@ -153,15 +153,18 @@ class BedrockLlamaChatTemplate:
 def get_tokenizer_aws_model_id(model_name):
     tokenizer, aws_model_id = None, None
     if model_name == "llama3.1-8b":
-        tokenizer = BedrockLlamaChatTemplate()
+        hf_path = "meta-llama/Llama-3.1-8B-Instruct"
+        tokenizer = AutoTokenizer.from_pretrained(hf_path)
         aws_model_id= "meta.llama3-1-8b-instruct-v1:0"
 
     elif model_name == "llama3.1-70b":
-        tokenizer = BedrockLlamaChatTemplate()
+        hf_path = "meta-llama/Llama-3.1-70B-Instruct"
+        tokenizer = AutoTokenizer.from_pretrained(hf_path)
         aws_model_id= "meta.llama3-70b-instruct-v1:0"
 
     elif model_name == "llama3.1-405b":
-        tokenizer = BedrockLlamaChatTemplate()
+        hf_path = "meta-llama/Llama-3.1-405B-Instruct"
+        tokenizer = AutoTokenizer.from_pretrained(hf_path)
         aws_model_id= "meta.llama3-1-405b-instruct-v1:0"
         
     return tokenizer, aws_model_id

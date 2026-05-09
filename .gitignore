@@ -53,3 +53,9 @@ env/
 *.log
 aws_keys.csv
 .env
+aws_keys.csv
+.env
+.venv/
+__pycache__/
+outputs_rank_optimizer/
+*.pickle

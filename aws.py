@@ -2,6 +2,9 @@ import os
 import boto3
 import json
 import base64
+import time
+import random
+from botocore.exceptions import ClientError
 
 
 class Chat:
@@ -62,18 +65,32 @@ class Chat:
 
 
     def generate(self):
-        response = self.bedrock_runtime_client.invoke_model(
-            modelId=self.model_id,
-            contentType="application/json",
-            body=json.dumps(self.payload)
-        )
+        for attempt in range(8):
+            try:
+                response = self.bedrock_runtime_client.invoke_model(
+                    modelId=self.model_id,
+                    contentType="application/json",
+                    body=json.dumps(self.payload)
+                )
+                break
 
-        # now we need to read the response. It comes back as a stream of bytes so if we want to display the response in one go we need to read the full stream first
-        # then convert it to a string as json and load it as a dictionary so we can access the field containing the content without all the metadata noise
+            except ClientError as e:
+                code = e.response.get("Error", {}).get("Code", "")
+
+                if code in ["ThrottlingException", "TooManyRequestsException", "ServiceQuotaExceededException"]:
+                    wait = min(90, 5 * (2 ** attempt)) + random.uniform(0, 2)
+                    print(f"Throttled by Bedrock. Waiting {wait:.1f}s before retry {attempt + 1}/8...")
+                    time.sleep(wait)
+                    continue
+
+                raise
+
+        else:
+            raise RuntimeError("Bedrock request failed after repeated throttling retries.")
+
         output_binary = response["body"].read()
         output_json = json.loads(output_binary)
         output = output_json["content"][0]["text"]
-
 
         self.payload["messages"].append(
             {

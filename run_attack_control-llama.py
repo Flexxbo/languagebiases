@@ -86,9 +86,9 @@ def attack_experiment(model_name, attack, aws_keys_csv_filename, run_control): #
                 print (f"Attack is complete: {[model_name, attack, user_msg_type, catalog]}")
                 continue
 
-            for item_attacked in range (1): ###user_msg, filename = get_user_msg(catalog, user_msg_type) #list_of_products = read_products(filename) #for item_attacked in range (len(list_of_products)):
+            for item_attacked in range (2): ###user_msg, filename = get_user_msg(catalog, user_msg_type) #list_of_products = read_products(filename) #for item_attacked in range (len(list_of_products)):
                 outps = []
-                for i in range (1):
+                for i in range (3):
                     
                     user_msg, filename = get_user_msg(catalog, user_msg_type) ###delete from here
                     list_of_products = read_products(filename) # read products ###delete from here
@@ -96,11 +96,13 @@ def attack_experiment(model_name, attack, aws_keys_csv_filename, run_control): #
                     if "baseline" in attack:
                         if run_control == False:
                             list_of_products[item_attacked]["Description"] = attacker(list_of_products[item_attacked], aws_access_key_id, aws_secret_access_key) # attack to the product
+                            time.sleep(15)
                         list_of_products_shuffled = list_of_products.copy() # make a copy to shuffle it
                     else:
                         list_of_products_exp = read_products(filename.split(".json")[0] + "_expanded.jsonl") # read products ### :( 
                         if run_control == False:    
                             list_of_products_exp[item_attacked]["Description"] = attacker(list_of_products[item_attacked], aws_access_key_id, aws_secret_access_key) # attack to the product
+                            time.sleep(15)
                         list_of_products_shuffled = list_of_products_exp.copy() # make a copy to shuffle it
                         
                     random.shuffle(list_of_products_shuffled) # shuffle the list of products 
@@ -115,7 +117,7 @@ def attack_experiment(model_name, attack, aws_keys_csv_filename, run_control): #
 
                     with open (os.path.join(output_folder, f"experiment_{catalog}_{user_msg_type}_{model_name}_{attack}_{item_attacked}.pickle"), "wb") as handle:
                         pickle.dump(outps, handle)
-                    time.sleep(2)
+                    time.sleep(15)
                 if run_control == True:
                     break
                             

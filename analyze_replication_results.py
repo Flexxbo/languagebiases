@@ -1,13 +1,15 @@
-import glob
+import csv
 import os
 import pickle
-import re
+from datetime import datetime
 from statistics import mean
 
 BASE = "outputs_rank_optimizer"
 MODEL = "llama3.1-8b"
 CATALOG = "coffee_machines"
 QUERY_TYPE = "abstract"
+
+EXPORT_DIR = "csv_exports"
 
 ATTACKS = [
     "social_proof_baseline",
@@ -17,9 +19,11 @@ ATTACKS = [
     # "exclusivity",
 ]
 
+
 def load_pickle(path):
     with open(path, "rb") as f:
         return pickle.load(f)
+
 
 def metrics_for_target(runs, target_idx):
     positions = []
@@ -49,6 +53,7 @@ def metrics_for_target(runs, target_idx):
         "mrr": mrr,
     }
 
+
 def get_path(attack, target_idx):
     return os.path.join(
         BASE,
@@ -56,15 +61,30 @@ def get_path(attack, target_idx):
         f"experiment_{CATALOG}_{QUERY_TYPE}_{MODEL}_{attack}_{target_idx}.pickle"
     )
 
+
 def fmt_pos(x):
     return "N/A" if x is None else f"{x:.2f}"
+
 
 def delta_pos(control_pos, attack_pos):
     if control_pos is None or attack_pos is None:
         return None
     return attack_pos - control_pos
 
+
+def get_export_path():
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    export_file = f"deltas_{CATALOG}_{QUERY_TYPE}_{MODEL}_{timestamp}.csv"
+
+    return os.path.join(EXPORT_DIR, export_file)
+
+
 def main():
+    export_path = get_export_path()
+    csv_rows = []
+
     print("\nPER-PRODUCT DELTAS AGAINST CONTROL")
     print("=" * 120)
     print(
@@ -111,6 +131,7 @@ def main():
 
             aggregate[attack]["delta_rate"].append(d_rate)
             aggregate[attack]["delta_mrr"].append(d_mrr)
+
             if d_pos is not None:
                 aggregate[attack]["delta_pos"].append(d_pos)
 
@@ -126,6 +147,30 @@ def main():
                 f"{('N/A' if d_pos is None else f'{d_pos:.2f}'):>8s} "
                 f"{c['mrr']:8.3f} {a['mrr']:8.3f} {d_mrr:8.3f}"
             )
+
+            csv_rows.append({
+                "row_type": "per_product",
+                "catalog": CATALOG,
+                "query_type": QUERY_TYPE,
+                "model": MODEL,
+                "attack": attack,
+                "target_idx": target_idx,
+                "runs": a["runs"],
+                "control_recommended": c["recommended"],
+                "attack_recommended": a["recommended"],
+                "control_rate": c["rate"],
+                "attack_rate": a["rate"],
+                "delta_rate": d_rate,
+                "control_avg_pos": c["avg_pos"],
+                "attack_avg_pos": a["avg_pos"],
+                "delta_pos": d_pos,
+                "control_mrr": c["mrr"],
+                "attack_mrr": a["mrr"],
+                "delta_mrr": d_mrr,
+                "rate_up": d_rate > 0,
+                "pos_better": d_pos is not None and d_pos < 0,
+                "mrr_up": d_mrr > 0,
+            })
 
     print("\nAGGREGATE SUMMARY")
     print("=" * 120)
@@ -147,6 +192,62 @@ def main():
             f"{mean_d_mrr:12.3f} "
             f"{vals['rate_up']:8d} {vals['pos_up']:11d} {vals['mrr_up']:8d}"
         )
+
+        csv_rows.append({
+            "row_type": "aggregate",
+            "catalog": CATALOG,
+            "query_type": QUERY_TYPE,
+            "model": MODEL,
+            "attack": attack,
+            "target_idx": "",
+            "runs": n,
+            "control_recommended": "",
+            "attack_recommended": "",
+            "control_rate": "",
+            "attack_rate": "",
+            "delta_rate": mean_d_rate,
+            "control_avg_pos": "",
+            "attack_avg_pos": "",
+            "delta_pos": mean_d_pos,
+            "control_mrr": "",
+            "attack_mrr": "",
+            "delta_mrr": mean_d_mrr,
+            "rate_up": vals["rate_up"],
+            "pos_better": vals["pos_up"],
+            "mrr_up": vals["mrr_up"],
+        })
+
+    fieldnames = [
+        "row_type",
+        "catalog",
+        "query_type",
+        "model",
+        "attack",
+        "target_idx",
+        "runs",
+        "control_recommended",
+        "attack_recommended",
+        "control_rate",
+        "attack_rate",
+        "delta_rate",
+        "control_avg_pos",
+        "attack_avg_pos",
+        "delta_pos",
+        "control_mrr",
+        "attack_mrr",
+        "delta_mrr",
+        "rate_up",
+        "pos_better",
+        "mrr_up",
+    ]
+
+    with open(export_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(csv_rows)
+
+    print(f"\nCSV export written to: {export_path}")
+
 
 if __name__ == "__main__":
     main()

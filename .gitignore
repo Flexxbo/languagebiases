@@ -49,6 +49,10 @@ env/
 *.csv
 !requirements.txt
 
+# CSV exports
+!csv_exports/
+!csv_exports/*.csv
+
 # Logs
 *.log
 aws_keys.csv

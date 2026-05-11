@@ -88,7 +88,7 @@ def attack_experiment(model_name, attack, aws_keys_csv_filename, run_control): #
 
             for item_attacked in range (10): ###user_msg, filename = get_user_msg(catalog, user_msg_type) #list_of_products = read_products(filename) #for item_attacked in range (len(list_of_products)):
                 outps = []
-                for i in range (5):
+                for i in range (30):
                     print(f"Running catalog={catalog}, attack={attack}, item={item_attacked}, run={i+1}", flush=True)
                     user_msg, filename = get_user_msg(catalog, user_msg_type) ###delete from here
                     list_of_products = read_products(filename) # read products ###delete from here
